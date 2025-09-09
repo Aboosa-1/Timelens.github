@@ -9,21 +9,20 @@ app.use(cors());
 
 let lastMessage = ""; // لتخزين آخر رسالة
 
-// GET /
+// GET / → رسالة تأكيد أن السيرفر شغال
 app.get("/", (req, res) => {
-  res.send("✅ Server is running on Railway. Use POST /set-language to send language.");
+  res.send("✅ Server is running. Use POST /set-language to send language.");
 });
 
-// POST /set-language
+// POST /set-language → استقبال اللغة من Flutter
 app.post("/set-language", (req, res) => {
   const { lang } = req.body;
 
   if (!lang) {
-    return res
-      .status(400)
-      .json({ message: "Please send a 'lang' field in JSON" });
+    return res.status(400).json({ message: "Please send a 'lang' field in JSON" });
   }
 
+  // هنا نطبع اللغة في التيرمنال
   if (lang === "ar") {
     console.log("🟢 المستخدم اختار اللغة العربية");
   } else if (lang === "en") {
@@ -32,21 +31,21 @@ app.post("/set-language", (req, res) => {
     console.log("⚠️ لغة غير مدعومة:", lang);
   }
 
-  lastMessage = lang;
+  lastMessage = lang; // تخزين آخر رسالة
   res.json({ message: `تم استقبال اللغة: ${lang}` });
 });
 
-// GET /get-language
-app.get("/get-language", (req, res) => {
+// GET /get-message → عرض آخر رسالة
+app.get("/get-message", (req, res) => {
   if (lastMessage) {
-    res.json({ language: lastMessage });
+    res.json({ message: lastMessage });
   } else {
-    res.json({ message: "لم يتم إرسال أي لغة بعد" });
+    res.json({ message: "لم يتم إرسال أي رسالة بعد" });
   }
 });
 
-// Railway uses dynamic port
-const PORT = process.env.PORT || 3000;
+// تشغيل السيرفر على البورت 3000
+const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
