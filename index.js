@@ -1,4 +1,3 @@
-// index.js
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -22,7 +21,7 @@ app.post("/set-language", (req, res) => {
     return res.status(400).json({ message: "Please send a 'lang' field in JSON" });
   }
 
-  // هنا نطبع اللغة في التيرمنال
+  // نطبع اللغة في التيرمنال
   if (lang === "ar") {
     console.log("🟢 المستخدم اختار اللغة العربية");
   } else if (lang === "en") {
@@ -44,8 +43,8 @@ app.get("/get-message", (req, res) => {
   }
 });
 
-// تشغيل السيرفر على البورت 3000
-const PORT = 3000;
+// تشغيل السيرفر على البورت اللي Railway بيوفره
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
