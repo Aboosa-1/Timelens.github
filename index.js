@@ -9,12 +9,12 @@ app.use(cors());
 
 let lastMessage = ""; // لتخزين آخر رسالة
 
-// GET / → رسالة تأكيد أن السيرفر شغال
+// GET /
 app.get("/", (req, res) => {
-  res.send("✅ Server is running. Use POST /set-language to send language.");
+  res.send("✅ Server is running on Railway. Use POST /set-language to send language.");
 });
 
-// POST /set-language → استقبال اللغة من Flutter
+// POST /set-language
 app.post("/set-language", (req, res) => {
   const { lang } = req.body;
 
@@ -36,7 +36,7 @@ app.post("/set-language", (req, res) => {
   res.json({ message: `تم استقبال اللغة: ${lang}` });
 });
 
-// GET /get-language → عرض آخر لغة
+// GET /get-language
 app.get("/get-language", (req, res) => {
   if (lastMessage) {
     res.json({ language: lastMessage });
@@ -45,8 +45,8 @@ app.get("/get-language", (req, res) => {
   }
 });
 
-// تشغيل السيرفر على البورت 3000
-const PORT = 3000;
+// Railway uses dynamic port
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
