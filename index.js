@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // -------------------------
-// 1️⃣  LOGIN: التحقق من idToken
+// 1️⃣ LOGIN: التحقق من idToken + ربط النظارة
 // -------------------------
 app.post("/login", async (req, res) => {
   try {
@@ -27,28 +27,28 @@ app.post("/login", async (req, res) => {
       return res.status(400).json({ message: "idToken is required" });
     }
 
-    // التحقق من الـ idToken
+    // ✅ التحقق من الـ idToken
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    // البحث في Firestore عن النظارة الخاصة بالمستخدم
-    // (مفترض أنك عامل Collection اسمه 'glasses' كل doc هو uid المستخدم)
-    const glassDoc = await db.collection("glasses").doc(uid).get();
+    // ✅ البحث في Firestore عن بيانات الجهاز (النظارة + التطبيق)
+    const deviceDoc = await db.collection("devices").doc(uid).get();
 
-    if (!glassDoc.exists) {
-      return res.status(404).json({ message: "No glasses linked to this user" });
+    if (!deviceDoc.exists) {
+      return res.status(404).json({ message: "No device linked to this user" });
     }
 
-    const glassData = glassDoc.data();
+    const deviceData = deviceDoc.data();
 
     res.json({
       message: "Login successful",
       uid: uid,
-      glassId: glassData.glassId || null,
-      glassData: glassData,
+      glassId: deviceData.glassId || null,
+      appId: deviceData.appId || null,
+      deviceData: deviceData,
     });
   } catch (error) {
-    console.error(error);
+    console.error("❌ Login Error:", error);
     res.status(500).json({ message: "Login error", error: error.message });
   }
 });
@@ -70,11 +70,11 @@ app.post("/set-language", (req, res) => {
   } else if (lang === "en") {
     console.log("🔵 User selected English");
   } else {
-    console.log("⚠️ لغة غير مدعومة:", lang);
+    console.log("⚠ لغة غير مدعومة:", lang);
   }
 
   lastMessage = lang;
-  res.json({ message: `تم استقبال اللغة: ${lang}` });
+  res.json({ message: تم استقبال اللغة: ${lang} }); // ✅ تعديل الـ string
 });
 
 // -------------------------
@@ -93,5 +93,5 @@ app.get("/get-message", (req, res) => {
 // -------------------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(🚀 Server running on port ${PORT});
 });
