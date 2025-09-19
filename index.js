@@ -74,7 +74,7 @@ app.post("/set-language", (req, res) => {
   }
 
   lastMessage = lang;
-  res.json({ message: تم استقبال اللغة: ${lang} }); // ✅ تعديل الـ string
+  res.json({ message: `تم استقبال اللغة: ${lang}` });
 });
 
 // -------------------------
