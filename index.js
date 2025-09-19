@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // -------------------------
-// 1️⃣ LOGIN: التحقق من idToken + ربط النظارة
+// ⿡ LOGIN: التحقق من idToken + ربط النظارة
 // -------------------------
 app.post("/login", async (req, res) => {
   try {
@@ -54,7 +54,7 @@ app.post("/login", async (req, res) => {
 });
 
 // -------------------------
-// 2️⃣ SET LANGUAGE: حفظ اللغة
+// ⿢ SET LANGUAGE: حفظ اللغة
 // -------------------------
 let lastMessage = ""; // تخزين آخر رسالة
 
@@ -74,11 +74,11 @@ app.post("/set-language", (req, res) => {
   }
 
   lastMessage = lang;
-  res.json({ message: `تم استقبال اللغة: ${lang}` });
+  res.json({ message: `تم استقبال اللغة: ${lang}` }); // ✅ تم التعديل هنا
 });
 
 // -------------------------
-// 3️⃣ GET MESSAGE: عرض آخر رسالة
+// ⿣ GET MESSAGE: عرض آخر رسالة
 // -------------------------
 app.get("/get-message", (req, res) => {
   if (lastMessage) {
@@ -93,5 +93,5 @@ app.get("/get-message", (req, res) => {
 // -------------------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(🚀 Server running on port ${PORT});
+  console.log(`🚀 Server running on port ${PORT}`); // ✅ تم التعديل هنا
 });
