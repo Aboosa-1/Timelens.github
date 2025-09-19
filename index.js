@@ -2,14 +2,14 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const admin = require("firebase-admin");
-const path = require("path");
 
-// 🔹 تهيئة Firebase Admin SDK
-const serviceAccount = require(path.join(__dirname, "serviceAccountKey.json"));
+// 🔹 تحميل بيانات الـ serviceAccount من متغير بيئة (مش من ملف)
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
+
 const db = admin.firestore();
 
 const app = express();
@@ -74,7 +74,7 @@ app.post("/set-language", (req, res) => {
   }
 
   lastMessage = lang;
-  res.json({ message: `تم استقبال اللغة: ${lang}` }); // ✅ تم التعديل هنا
+  res.json({ message: `تم استقبال اللغة: ${lang}` }); // ✅ Backticks
 });
 
 // -------------------------
@@ -93,5 +93,5 @@ app.get("/get-message", (req, res) => {
 // -------------------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`); // ✅ تم التعديل هنا
+  console.log(`🚀 Server running on port ${PORT}`); // ✅ Backticks + String
 });
