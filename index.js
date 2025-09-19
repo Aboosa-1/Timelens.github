@@ -27,11 +27,9 @@ app.post("/login", async (req, res) => {
       return res.status(400).json({ message: "idToken is required" });
     }
 
-    // ✅ التحقق من الـ idToken
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    // ✅ البحث في Firestore عن بيانات الجهاز (النظارة + التطبيق)
     const deviceDoc = await db.collection("devices").doc(uid).get();
 
     if (!deviceDoc.exists) {
@@ -74,7 +72,7 @@ app.post("/set-language", (req, res) => {
   }
 
   lastMessage = lang;
-  res.json({ message: تم استقبال اللغة: ${lang} }); // ✅ تعديل الـ string
+  res.json({ message: `تم استقبال اللغة: ${lang}` });
 });
 
 // -------------------------
@@ -93,5 +91,5 @@ app.get("/get-message", (req, res) => {
 // -------------------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(🚀 Server running on port ${PORT});
+  console.log(`🚀 Server running on port ${PORT}`);
 });
